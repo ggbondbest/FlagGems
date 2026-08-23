@@ -43,7 +43,6 @@ from flag_gems.fused.fused_marlin_moe import fused_marlin_moe as gems_fused_marl
 from . import base
 
 
-
 def is_cuda_available():
     if flag_gems.device != "cuda":
         return False
@@ -111,7 +110,6 @@ def _wna16_quantize_per_expert_int8(w_fp):
         w_q[e] = q_e
         scales[e] = sc_e
     return w_q, scales
-
 
 
 def _wna16_quantize_per_expert_fp8(w_fp):
@@ -784,6 +782,7 @@ def test_fused_marlin_moe_mxfp4():
     bench.set_gems(_gems_call_mxfp4)
     bench.run()
 
+
 @pytest.mark.fused_marlin_moe
 @pytest.mark.skipif(
     not HAS_VLLM_FUSED_MARLIN_MOE, reason="vllm not installed; baseline unavailable"
@@ -803,11 +802,11 @@ def test_fused_marlin_moe_int8_mxq():
     bench.run()
 
 
-
 @pytest.mark.fused_marlin_moe
 @pytest.mark.skip(reason="vLLM Marlin MoE has no unquantized bf16 expert path")
 def test_fused_marlin_moe_bf16_mxq():
     pass
+
 
 class FusedMarlinMoEBenchmarkFp8WeightMXQ(base.Benchmark):
     """MXQ/Qwen W(fp8)A16 benchmark against vLLM Marlin W8A16."""
@@ -916,7 +915,6 @@ class FusedMarlinMoEBenchmarkFp8WeightMXQ(base.Benchmark):
         )
 
 
-
 def _vllm_baseline_int8_for_fp8_bench(
     hidden_states,
     w1_q_marlin,
@@ -971,6 +969,7 @@ def _gems_call_fp8_weight(
         quant_type_id=QUANT_TYPE_FLOAT8_E4M3FN,
     )
 
+
 @pytest.mark.fused_marlin_moe
 @pytest.mark.skipif(
     not HAS_VLLM_FUSED_MARLIN_MOE, reason="vllm not installed; baseline unavailable"
@@ -983,7 +982,6 @@ def test_fused_marlin_moe_fp8_weight_mxq():
     """
     bench = FusedMarlinMoEBenchmarkFp8WeightMXQ(
         op_name="fused_marlin_moe_fp8_weight_mxq",
-
         torch_op=_vllm_baseline_int8_for_fp8_bench,
         dtypes=[torch.bfloat16],
     )
